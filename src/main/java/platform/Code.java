@@ -3,12 +3,16 @@ package platform;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Code {
     private String code;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String title;
     private LocalDateTime date;
+
+    private static final String DATE_FORMATTER = "yyyy-MM-dd HH:mm:ss";
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMATTER);
 
     public Code(){
     }
@@ -40,8 +44,8 @@ public class Code {
         this.title = title;
     }
 
-    public LocalDateTime getDate() {
-        return date;
+    public String getDate() {
+        return date.format(formatter);
     }
 
     public void setDate(LocalDateTime date) {

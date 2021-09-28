@@ -14,13 +14,11 @@ import java.util.Map;
 @RestController
 public class CodeController {
 
-    private static final String DATE_FORMATTER = "yyyy-MM-dd HH:mm:ss";
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMATTER);
 
     private final String title = "Code";
     private final String codeData = "public static void main(String[] args) {\n    SpringApplication.run(CodeSharingPlatform.class, args);\n}";
 
-    private final Code code = new Code(codeData, title, LocalDateTime.now());
+    private Code code = new Code(codeData, title, LocalDateTime.now());
 
     public CodeController() {
     }
@@ -39,7 +37,7 @@ public class CodeController {
     public ResponseEntity<String> getHtmlCode() {
         return ResponseEntity.ok()
                 .body("<title>" + code.getTitle() + "</title>"
-                        + "<span id=\"load_date\">" + LocalDateTime.now().format(formatter) + "</span>"
+                        + "<span id=\"load_date\">" + code.getDate() + "</span>"
                         + "<pre id=\"code_snippet\">" + code.getCode() + "</pre>");
     }
 
