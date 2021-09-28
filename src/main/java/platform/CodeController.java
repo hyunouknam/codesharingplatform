@@ -40,7 +40,7 @@ public class CodeController {
         return ResponseEntity.ok()
                 .body("<title>" + code.getTitle() + "</title>"
                         + "<span id=\"load_date\">" + LocalDateTime.now().format(formatter) + "</span>"
-                        + "<pre id=\"code+snippet\">" + code.getCode() + "</pre>");
+                        + "<pre id=\"code_snippet\">" + code.getCode() + "</pre>");
     }
 
     @GetMapping(path = "/code/new", produces = "text/html")
