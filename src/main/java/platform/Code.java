@@ -2,25 +2,23 @@ package platform;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Code {
     private String code;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String title;
-
-    private LocalDate date;
+    private LocalDateTime date;
 
     public Code(){
-
     }
 
     public Code(String code){
         this.title = "";
-        this.date = LocalDate.now();
+        this.date = LocalDateTime.now();
     }
 
-    public Code(String code, String title, LocalDate date) {
+    public Code(String code, String title, LocalDateTime date) {
         this.code = code;
         this.title = title;
         this.date = date;
@@ -42,11 +40,11 @@ public class Code {
         this.title = title;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 }

@@ -6,17 +6,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Map;
 
 @RestController
 public class CodeController {
 
+    private static final String DATE_FORMATTER = "yyyy-MM-dd HH:mm:ss";
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMATTER);
+
     private final String title = "Code";
     private final String codeData = "public static void main(String[] args) {\n    SpringApplication.run(CodeSharingPlatform.class, args);\n}";
 
-    private final Code code = new Code(codeData, title, LocalDate.now());
+    private final Code code = new Code(codeData, title, LocalDateTime.now());
 
     public CodeController() {
     }
@@ -35,7 +39,7 @@ public class CodeController {
     public ResponseEntity<String> getHtmlCode() {
         return ResponseEntity.ok()
                 .body("<title>" + code.getTitle() + "</title>"
-                        + "<span id=\"load_date\">" + code.getDate() + "</span>"
+                        + "<span id=\"load_date\">" + LocalDateTime.now().format(formatter) + "</span>"
                         + "<pre id=\"code+snippet\">" + code.getCode() + "</pre>");
     }
 
