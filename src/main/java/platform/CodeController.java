@@ -4,13 +4,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
+
 @RestController
 public class CodeController {
 
     private final String title = "Code";
     private final String codeData = "public static void main(String[] args) {\n    SpringApplication.run(CodeSharingPlatform.class, args);\n}";
 
-    private final Code code = new Code(codeData, title);
+    private final Code code = new Code(codeData, title, LocalDate.now());
 
     public CodeController() {
     }
@@ -24,7 +26,8 @@ public class CodeController {
     public ResponseEntity<String> getHtmlCode() {
         return ResponseEntity.ok()
                 .body("<title>" + code.getTitle() + "</title>"
-                        + "<pre>" + code.getCode() + "</pre>");
+                        + "<span id=\"load_date\">" + code.getDate() + "</span>"
+                        + "<pre id=\"code+snippet\">" + code.getCode() + "</pre>");
     }
 
 }
