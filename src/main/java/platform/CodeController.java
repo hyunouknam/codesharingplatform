@@ -2,9 +2,13 @@ package platform;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Map;
 
 @RestController
 public class CodeController {
@@ -15,6 +19,11 @@ public class CodeController {
     private final Code code = new Code(codeData, title, LocalDate.now());
 
     public CodeController() {
+    }
+
+    @PostMapping(path = "/api/code/new")
+    public Map<String,String> postCode(@RequestBody Code code){
+        return Collections.emptyMap();
     }
 
     @GetMapping(path = "/api/code", produces = "application/json;charset=UTF-8")
@@ -30,4 +39,11 @@ public class CodeController {
                         + "<pre id=\"code+snippet\">" + code.getCode() + "</pre>");
     }
 
+    @GetMapping(path = "/code/new", produces = "text/html")
+    public ResponseEntity<String> getNewCode() {
+        return ResponseEntity.ok()
+                .body("<title>" + "Create" + "</title>"
+                        + "<textarea id=\"code_snippet\">" + "..." + "</textarea>"
+                        + "<button id=\"send_snippet\" type=\"submit\" onclick=\"send()\">" + "Submit" + "</button>");
+    }
 }

@@ -11,6 +11,15 @@ public class Code {
 
     private LocalDate date;
 
+    public Code(){
+
+    }
+
+    public Code(String code){
+        this.title = "";
+        this.date = LocalDate.now();
+    }
+
     public Code(String code, String title, LocalDate date) {
         this.code = code;
         this.title = title;
