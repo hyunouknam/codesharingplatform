@@ -14,17 +14,20 @@ import java.util.Map;
 @RestController
 public class CodeController {
 
+    private static final String DATE_FORMATTER = "yyyy-MM-dd HH:mm:ss";
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMATTER);
 
     private final String title = "Code";
     private final String codeData = "public static void main(String[] args) {\n    SpringApplication.run(CodeSharingPlatform.class, args);\n}";
 
-    private Code code = new Code(codeData, title, LocalDateTime.now());
+    private Code code = new Code(codeData, title, LocalDateTime.now().format(formatter));
 
     public CodeController() {
     }
 
     @PostMapping(path = "/api/code/new")
     public Map<String,String> postCode(@RequestBody Code code){
+        this.code = new Code(code.getCode(), "Code", LocalDateTime.now().format(formatter));
         return Collections.emptyMap();
     }
 

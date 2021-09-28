@@ -9,20 +9,12 @@ public class Code {
     private String code;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String title;
-    private LocalDateTime date;
-
-    private static final String DATE_FORMATTER = "yyyy-MM-dd HH:mm:ss";
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMATTER);
+    private String date;
 
     public Code(){
     }
 
-    public Code(String code){
-        this.title = "";
-        this.date = LocalDateTime.now();
-    }
-
-    public Code(String code, String title, LocalDateTime date) {
+    public Code(String code, String title, String date) {
         this.code = code;
         this.title = title;
         this.date = date;
@@ -45,10 +37,10 @@ public class Code {
     }
 
     public String getDate() {
-        return date.format(formatter);
+        return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(String date) {
         this.date = date;
     }
 }
