@@ -8,10 +8,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.util.List.*;
 
@@ -24,9 +22,11 @@ public class CodeController {
     private final String title = "Code";
     private final String codeData = "public static void main(String[] args) {\n    SpringApplication.run(CodeSharingPlatform.class, args);\n}";
 
-    private Code code = new Code(codeData, title, LocalDateTime.now().format(formatter));
+    private Code code = new Code(codeData, title, LocalDateTime.now().format(formatter), 34234);
 
+    //private Map<Integer,Code> codeMap = new HashMap<>();
     private List<Code> codeList = new ArrayList<>();
+    private AtomicInteger counter = new AtomicInteger(1);
 
     public CodeController() {
     }
@@ -34,8 +34,11 @@ public class CodeController {
     @PostMapping(path = "/api/code/new")
     @ResponseBody
     public Map<String,String> postCode(@RequestBody Code code){
-        codeList.add(new Code(code.getCode(), "Code", LocalDateTime.now().format(formatter)));
-        return Collections.emptyMap();
+        codeList.add(new Code(code.getCode(), "Code", LocalDateTime.now().format(formatter), counter.get()));
+        Map<String,String> idMap = new HashMap<>();
+        idMap.put("id", String.valueOf(counter.get()));
+        counter.getAndIncrement();
+        return idMap;
     }
 
     @GetMapping(path = "/api/code", produces = "application/json;charset=UTF-8")

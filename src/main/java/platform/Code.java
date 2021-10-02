@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Code {
+    private int id;
     private String code;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String title;
@@ -14,10 +15,19 @@ public class Code {
     public Code(){
     }
 
-    public Code(String code, String title, String date) {
+    public Code(String code, String title, String date, int id) {
         this.code = code;
         this.title = title;
         this.date = date;
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getCode() {
