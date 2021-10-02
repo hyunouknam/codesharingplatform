@@ -8,12 +8,15 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="demo.main" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-web:2.5.5" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-freemarker:2.5.5" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-test:2.5.5" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-json:2.5.5" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter:2.5.5" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-tomcat:2.5.5" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-webmvc:5.3.10" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-web:5.3.10" level="project" />
+    <orderEntry type="library" name="Gradle: org.freemarker:freemarker:2.3.31" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-context-support:5.3.10" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-test-autoconfigure:2.5.5" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-test:2.5.5" level="project" />
     <orderEntry type="library" name="Gradle: com.jayway.jsonpath:json-path:2.5.0" level="project" />

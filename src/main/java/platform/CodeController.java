@@ -1,17 +1,24 @@
 package platform;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
-@RestController
+import static java.util.List.*;
+
+@Controller
 public class CodeController {
 
     private static final String DATE_FORMATTER = "yyyy-MM-dd HH:mm:ss";
@@ -21,6 +28,8 @@ public class CodeController {
     private final String codeData = "public static void main(String[] args) {\n    SpringApplication.run(CodeSharingPlatform.class, args);\n}";
 
     private Code code = new Code(codeData, title, LocalDateTime.now().format(formatter));
+
+    private List<Code> codeList = new ArrayList<>();
 
     public CodeController() {
     }
@@ -36,12 +45,9 @@ public class CodeController {
         return code;
     }
 
-    @GetMapping(path = "/code", produces = "text/html")
-    public ResponseEntity<String> getHtmlCode() {
-        return ResponseEntity.ok()
-                .body("<title>" + code.getTitle() + "</title>"
-                        + "<span id=\"load_date\">" + code.getDate() + "</span>"
-                        + "<pre id=\"code_snippet\">" + code.getCode() + "</pre>");
+    @GetMapping(path = "/code")
+    public String getHtmlCode(Model model) {
+        return "codeView";
     }
 
     @GetMapping(path = "/code/new", produces = "text/html")
