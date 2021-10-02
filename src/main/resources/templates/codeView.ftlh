@@ -4,6 +4,9 @@
     <title>Code</title>
 </head>
 <body>
-dsagfsd
+    <#list codes as code>
+            <p>${code.date}</p>
+            <p><pre>${code.code}</pre></p>
+    </#list>
 </body>
 </html>

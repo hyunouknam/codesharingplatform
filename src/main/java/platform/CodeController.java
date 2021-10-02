@@ -3,10 +3,7 @@ package platform;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
@@ -35,8 +32,9 @@ public class CodeController {
     }
 
     @PostMapping(path = "/api/code/new")
+    @ResponseBody
     public Map<String,String> postCode(@RequestBody Code code){
-        this.code = new Code(code.getCode(), "Code", LocalDateTime.now().format(formatter));
+        codeList.add(new Code(code.getCode(), "Code", LocalDateTime.now().format(formatter)));
         return Collections.emptyMap();
     }
 
@@ -47,6 +45,7 @@ public class CodeController {
 
     @GetMapping(path = "/code")
     public String getHtmlCode(Model model) {
+        model.addAttribute("codes", codeList);
         return "codeView";
     }
 
