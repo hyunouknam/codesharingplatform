@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Code {
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private int id;
     private String code;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
