@@ -61,7 +61,19 @@ public class CodeController {
                 currentList.add(code);
             }
         }
+        model.addAttribute("title", "Code");
         model.addAttribute("codes", currentList);
+        return "codeView";
+    }
+
+    @GetMapping(path = "/code/latest")
+    public String getLatestHtmlCode(Model model) {
+        if(codeList.size() > 10){
+            model.addAttribute("codes", codeList.subList((codeList.size()-10), codeList.size()));
+        }else{
+            model.addAttribute("codes", codeList);
+        }
+        model.addAttribute("title", "Latest");
         return "codeView";
     }
 

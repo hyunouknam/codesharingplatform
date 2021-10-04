@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Code</title>
+    <title>${title}</title>
 </head>
 <body>
     <#list codes as code>
