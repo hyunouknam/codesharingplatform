@@ -5,8 +5,8 @@
 </head>
 <body>
     <#list codes as code>
-            <p>${code.date}</p>
-            <p><pre>${code.code}</pre></p>
+            <p><span id="load_date">${code.date}</span></p>
+            <p><pre id="code_snippet">${code.code}</pre></p>
     </#list>
 </body>
 </html>
