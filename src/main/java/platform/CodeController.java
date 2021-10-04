@@ -79,7 +79,7 @@ public class CodeController {
 
     @GetMapping(path = "/api/code/latest", produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public List<Code> getApiCode() {
+    public List<Code> getLatestApiCode() {
         if(codeList.size() > 10){
             return codeList.subList((codeList.size()-10), codeList.size());
         }else{
