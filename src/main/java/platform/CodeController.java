@@ -77,6 +77,16 @@ public class CodeController {
         return "codeView";
     }
 
+    @GetMapping(path = "/api/code/latest", produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public List<Code> getApiCode() {
+        if(codeList.size() > 10){
+            return codeList.subList((codeList.size()-10), codeList.size());
+        }else{
+            return codeList;
+        }
+    }
+
     @GetMapping(path = "/code/new", produces = "text/html")
     public ResponseEntity<String> getNewCode() {
         return ResponseEntity.ok()
