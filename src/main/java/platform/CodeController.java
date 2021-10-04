@@ -69,9 +69,9 @@ public class CodeController {
     @GetMapping(path = "/code/latest")
     public String getLatestHtmlCode(Model model) {
         if(codeList.size() > 10){
-            model.addAttribute("codes", codeList.subList((codeList.size()-10), codeList.size()));
+            model.addAttribute("codes", reverseList(codeList.subList((codeList.size()-10), codeList.size())));
         }else{
-            model.addAttribute("codes", codeList);
+            model.addAttribute("codes", reverseList(codeList));
         }
         model.addAttribute("title", "Latest");
         return "codeView";
@@ -81,9 +81,9 @@ public class CodeController {
     @ResponseBody
     public List<Code> getLatestApiCode() {
         if(codeList.size() > 10){
-            return codeList.subList((codeList.size()-10), codeList.size());
+            return reverseList(codeList.subList((codeList.size()-10), codeList.size()));
         }else{
-            return codeList;
+            return reverseList(codeList);
         }
     }
 
@@ -93,5 +93,13 @@ public class CodeController {
                 .body("<title>" + "Create" + "</title>"
                         + "<textarea id=\"code_snippet\">" + "..." + "</textarea>"
                         + "<button id=\"send_snippet\" type=\"submit\" onclick=\"send()\">" + "Submit" + "</button>");
+    }
+
+    public List<Code> reverseList(List<Code> list){
+        List<Code> revList = new ArrayList<>();
+        for(int i = list.size()-1;i >= 0;i--){
+            revList.add(list.get(i));
+        }
+        return revList;
     }
 }
