@@ -41,15 +41,21 @@ public class CodeController {
         return idMap;
     }
 
-    @GetMapping(path = "/api/code", produces = "application/json;charset=UTF-8")
+    @GetMapping(path = "/api/code/{id}", produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public Code getApiCode() {
-        return code;
+    public Code getApiCode(@PathVariable int id) {
+        Code currentCode = null;
+        for(Code code: codeList){
+            if(code.getId() == id){
+                currentCode = code;
+            }
+        }
+        return currentCode;
     }
 
     @GetMapping(path = "/code/{id}")
     public String getHtmlCode(@PathVariable int id, Model model) {
-    List<Code> currentList = new ArrayList<>();
+        List<Code> currentList = new ArrayList<>();
         for(Code code: codeList){
             if(code.getId() == id){
                 currentList.add(code);
