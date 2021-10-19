@@ -3,6 +3,8 @@ package platform;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -11,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 public class Code {
     @Id
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
     private String code;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -20,11 +23,10 @@ public class Code {
     public Code(){
     }
 
-    public Code(String code, String title, String date, int id) {
+    public Code(String code, String title, String date) {
         this.code = code;
         this.title = title;
         this.date = date;
-        this.id = id;
     }
 
     public int getId() {

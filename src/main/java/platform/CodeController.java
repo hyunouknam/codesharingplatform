@@ -19,10 +19,7 @@ public class CodeController {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMATTER);
 
     private final String title = "Code";
-
-    private List<Code> codeList = new ArrayList<>();
-    private AtomicInteger counter = new AtomicInteger(1);
-
+    
     @Autowired
     private CodeService codeService;
 
@@ -32,10 +29,10 @@ public class CodeController {
     @PostMapping(path = "/api/code/new")
     @ResponseBody
     public Map<String,String> postCode(@RequestBody Code code){
-        codeService.addCode(new Code(code.getCode(), title, LocalDateTime.now().format(formatter), counter.get()));
+        Code newCode = new Code(code.getCode(), title, LocalDateTime.now().format(formatter));
+        codeService.addCode(newCode);
         Map<String,String> idMap = new HashMap<>();
-        idMap.put("id", String.valueOf(counter.get()));
-        counter.getAndIncrement();
+        idMap.put("id", String.valueOf(newCode.getId()));
         return idMap;
     }
 
@@ -57,11 +54,12 @@ public class CodeController {
 
     @GetMapping(path = "/code/latest")
     public String getLatestHtmlCode(Model model) {
-        if(codeList.size() > 10){
-            model.addAttribute("codes", reverseList(codeList.subList((codeList.size()-10), codeList.size())));
-        }else{
-            model.addAttribute("codes", reverseList(codeList));
+        if(codeService.getCount() > 10) {
+            model.addAttribute("codes", codeService.getLatestTen());
+        } else {
+            model.addAttribute("codes", codeService.getAll());
         }
+
         model.addAttribute("title", "Latest");
         return "codeView";
     }
@@ -69,10 +67,10 @@ public class CodeController {
     @GetMapping(path = "/api/code/latest", produces = "application/json;charset=UTF-8")
     @ResponseBody
     public List<Code> getLatestApiCode() {
-        if(codeList.size() > 10){
-            return reverseList(codeList.subList((codeList.size()-10), codeList.size()));
+        if(codeService.getCount() > 10){
+            return codeService.getLatestTen();
         }else{
-            return reverseList(codeList);
+            return codeService.getAll();
         }
     }
 
@@ -84,11 +82,4 @@ public class CodeController {
                         + "<button id=\"send_snippet\" type=\"submit\" onclick=\"send()\">" + "Submit" + "</button>");
     }
 
-    public List<Code> reverseList(List<Code> list){
-        List<Code> revList = new ArrayList<>();
-        for(int i = list.size()-1;i >= 0;i--){
-            revList.add(list.get(i));
-        }
-        return revList;
-    }
 }
