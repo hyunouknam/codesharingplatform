@@ -32,18 +32,18 @@ public class CodeController {
         Code newCode = new Code(code.getCode(), title, LocalDateTime.now().format(formatter));
         codeService.addCode(newCode);
         Map<String,String> idMap = new HashMap<>();
-        idMap.put("id", String.valueOf(newCode.getId()));
+        idMap.put("id", newCode.getId());
         return idMap;
     }
 
     @GetMapping(path = "/api/code/{id}", produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public Code getApiCode(@PathVariable int id) {
+    public Code getApiCode(@PathVariable String id) {
         return codeService.getCode(id).get();
     }
 
     @GetMapping(path = "/code/{id}")
-    public String getHtmlCode(@PathVariable int id, Model model) {
+    public String getHtmlCode(@PathVariable String id, Model model) {
         List<Code> currentList = new ArrayList<>();
         Optional.ofNullable(codeService.getCode(id)).ifPresent(x -> currentList.add(x.get()));
 

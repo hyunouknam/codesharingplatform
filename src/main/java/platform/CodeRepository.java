@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface CodeRepository extends CrudRepository<Code, Integer> {
+public interface CodeRepository extends CrudRepository<Code, String> {
     public List<Code> findAllByOrderByIdDesc();
     public List<Code> findTop10ByOrderByIdDesc();
 }

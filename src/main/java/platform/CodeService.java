@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class CodeService {
@@ -14,10 +15,12 @@ public class CodeService {
     private CodeRepository codeRepository;
 
     public void addCode(Code code) {
+        UUID uuid = UUID.randomUUID();
+        code.setId(uuid.toString());
         codeRepository.save(code);
     }
 
-    public Optional<Code> getCode(Integer id) {
+    public Optional<Code> getCode(String id) {
         return codeRepository.findById(id);
     }
 
