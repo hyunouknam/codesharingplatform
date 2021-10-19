@@ -19,7 +19,7 @@ public class CodeController {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMATTER);
 
     private final String title = "Code";
-    
+
     @Autowired
     private CodeService codeService;
 
