@@ -2,10 +2,14 @@ package platform;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+@Entity
 public class Code {
+    @Id
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private int id;
     private String code;
