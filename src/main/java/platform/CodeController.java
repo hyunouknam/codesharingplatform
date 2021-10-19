@@ -48,11 +48,8 @@ public class CodeController {
     @GetMapping(path = "/code/{id}")
     public String getHtmlCode(@PathVariable int id, Model model) {
         List<Code> currentList = new ArrayList<>();
-        for(Code code: codeList){
-            if(code.getId() == id){
-                currentList.add(code);
-            }
-        }
+        Optional.ofNullable(codeService.getCode(id)).ifPresent(x -> currentList.add(x.get()));
+
         model.addAttribute("title", "Code");
         model.addAttribute("codes", currentList);
         return "codeView";
