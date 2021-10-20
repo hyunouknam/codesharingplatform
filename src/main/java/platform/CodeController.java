@@ -57,10 +57,9 @@ public class CodeController {
             if(timeLeft <= 0 || currentList.get(0).getViews() == 0) {
                 codeService.deleteCode(currentList.get(0).getId());
             } else {
+                model.addAttribute("time", timeLeft);
                 codeService.updateCode(currentList.get(0));
             }
-
-            model.addAttribute("time", timeLeft);
         }
 
         model.addAttribute("title", "Code");

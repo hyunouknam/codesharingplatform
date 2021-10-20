@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface CodeRepository extends CrudRepository<Code, String> {
     public List<Code> findAllByOrderByIdDesc();
     public List<Code> findTop10ByOrderByIdDesc();
+    public List<Code> findAllBySecretFalseOrderByDateDesc();
+    public List<Code> findTop10BySecretFalseOrderByDateDesc();
 }

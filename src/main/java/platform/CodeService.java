@@ -37,11 +37,11 @@ public class CodeService {
     }
 
     public List<Code> getAll() {
-        return codeRepository.findAllByOrderByIdDesc();
+        return codeRepository.findAllBySecretFalseOrderByDateDesc();
     }
 
     public List<Code> getLatestTen() {
-        return codeRepository.findTop10ByOrderByIdDesc();
+        return codeRepository.findTop10BySecretFalseOrderByDateDesc();
     }
 
 }
