@@ -19,6 +19,8 @@ public class Code {
     private String title;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime date;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String formattedDate;
     private int views;
     private int time;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -59,7 +61,11 @@ public class Code {
         this.title = title;
     }
 
-    public String getDate() {
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public String getFormattedDate() {
         return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 

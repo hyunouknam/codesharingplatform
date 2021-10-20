@@ -9,7 +9,9 @@
 </head>
 <body>
     <#list codes as code>
-            <span id="load_date">${code.date}</span>
+            <span id="load_date">${code.formattedDate}</span><br>
+            <span id="time_restriction"> ${code.views} more views allowed </span><br>
+            <span id="views_restriction"> This code will be available for ${code.time} seconds </span>
             <pre id="code_snippet"><code>${code.code}</code></pre>
     </#list>
 </body>

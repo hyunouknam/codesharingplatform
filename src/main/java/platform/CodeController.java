@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -46,6 +47,8 @@ public class CodeController {
     public String getHtmlCode(@PathVariable String id, Model model) {
         List<Code> currentList = new ArrayList<>();
         Optional.ofNullable(codeService.getCode(id)).ifPresent(x -> currentList.add(x.get()));
+
+        //int timeBetween = (int) Duration.between(LocalDateTime.now(),currentList.get(0).getDate()).toMinutes() * 60;
 
         model.addAttribute("title", "Code");
         model.addAttribute("codes", currentList);
