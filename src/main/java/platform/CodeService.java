@@ -20,6 +20,14 @@ public class CodeService {
         codeRepository.save(code);
     }
 
+    public void updateCode(Code code) {
+        codeRepository.save(code);
+    }
+
+    public void deleteCode(String id) {
+        codeRepository.deleteById(id);
+    }
+
     public Optional<Code> getCode(String id) {
         return codeRepository.findById(id);
     }
@@ -35,4 +43,5 @@ public class CodeService {
     public List<Code> getLatestTen() {
         return codeRepository.findTop10ByOrderByIdDesc();
     }
+
 }

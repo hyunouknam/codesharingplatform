@@ -77,7 +77,7 @@ public class Code {
         return views;
     }
 
-    public void setView(int view) {
+    public void setViews(int view) {
         this.views = view;
     }
 

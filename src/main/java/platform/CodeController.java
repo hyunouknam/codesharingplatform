@@ -48,7 +48,20 @@ public class CodeController {
         List<Code> currentList = new ArrayList<>();
         Optional.ofNullable(codeService.getCode(id)).ifPresent(x -> currentList.add(x.get()));
 
-        //int timeBetween = (int) Duration.between(LocalDateTime.now(),currentList.get(0).getDate()).toMinutes() * 60;
+        if(currentList.get(0).isSecret()) {
+            int timeBetween = (int) (Duration.between(currentList.get(0).getDate(), LocalDateTime.now()).getSeconds());
+            int timeLeft = currentList.get(0).getTime() - timeBetween;
+
+            currentList.get(0).setViews(currentList.get(0).getViews() - 1);
+
+            if(timeLeft <= 0 || currentList.get(0).getViews() == 0) {
+                codeService.deleteCode(currentList.get(0).getId());
+            } else {
+                codeService.updateCode(currentList.get(0));
+            }
+
+            model.addAttribute("time", timeLeft);
+        }
 
         model.addAttribute("title", "Code");
         model.addAttribute("codes", currentList);
