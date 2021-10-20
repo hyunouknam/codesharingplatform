@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Controller
 public class CodeController {
@@ -77,11 +75,9 @@ public class CodeController {
     }
 
     @GetMapping(path = "/code/new", produces = "text/html")
-    public ResponseEntity<String> getNewCode() {
-        return ResponseEntity.ok()
-                .body("<title>" + "Create" + "</title>"
-                        + "<textarea id=\"code_snippet\">" + "..." + "</textarea>"
-                        + "<button id=\"send_snippet\" type=\"submit\" onclick=\"send()\">" + "Submit" + "</button>");
+    public String getNewCode(Model model) {
+        model.addAttribute("title", "Create");
+        return "codeSubmitView";
     }
 
 }
