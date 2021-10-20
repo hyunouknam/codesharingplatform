@@ -1,10 +1,12 @@
 package platform;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.Duration;
@@ -40,7 +42,24 @@ public class CodeController {
     @GetMapping(path = "/api/code/{id}", produces = "application/json;charset=UTF-8")
     @ResponseBody
     public Code getApiCode(@PathVariable String id) {
-        return codeService.getCode(id).get();
+        Code currentCode = codeService.getCode(id).get();
+
+        if(currentCode.isSecret()) {
+            int timeBetween = (int) (Duration.between(currentCode.getDate(), LocalDateTime.now()).getSeconds());
+            int timeLeft = currentCode.getTime() - timeBetween;
+
+            currentCode.setViews(currentCode.getViews() - 1);
+
+            if(timeLeft <= 0 || currentCode.getViews() == 0) {
+                codeService.deleteCode(currentCode.getId());
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
+            } else {
+                codeService.updateCode(currentCode);
+                currentCode.setTime(timeLeft);
+            }
+        }
+
+        return currentCode;
     }
 
     @GetMapping(path = "/code/{id}")
@@ -56,6 +75,7 @@ public class CodeController {
 
             if(timeLeft <= 0 || currentList.get(0).getViews() == 0) {
                 codeService.deleteCode(currentList.get(0).getId());
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
             } else {
                 model.addAttribute("time", timeLeft);
                 codeService.updateCode(currentList.get(0));
