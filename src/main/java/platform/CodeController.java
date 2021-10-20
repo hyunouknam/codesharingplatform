@@ -50,7 +50,7 @@ public class CodeController {
 
             currentCode.setViews(currentCode.getViews() - 1);
 
-            if(timeLeft <= 0 || currentCode.getViews() == 0) {
+            if((currentCode.getTime() != 0 && timeLeft <= 0) || currentCode.getViews() == 0) {
                 codeService.deleteCode(currentCode.getId());
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
             } else {
@@ -73,7 +73,7 @@ public class CodeController {
 
             currentList.get(0).setViews(currentList.get(0).getViews() - 1);
 
-            if(timeLeft <= 0 || currentList.get(0).getViews() == 0) {
+            if((currentList.get(0).getTime() != 0 && timeLeft <= 0) || currentList.get(0).getViews() == 0) {
                 codeService.deleteCode(currentList.get(0).getId());
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
             } else {
