@@ -10,8 +10,10 @@
 <body>
     <#list codes as code>
             <span id="load_date">${code.formattedDate}</span><br>
-            <#if code.secret>
+            <#if (code.views > 0)>
                 <span id="views_restriction"> ${code.views} more views allowed </span><br>
+            </#if>
+            <#if (code.time > 0)>
                 <span id="time_restriction"> This code will be available for ${time} seconds </span>
             </#if>
             <pre id="code_snippet"><code>${code.code}</code></pre>
