@@ -42,7 +42,13 @@ public class CodeController {
     @GetMapping(path = "/api/code/{id}", produces = "application/json;charset=UTF-8")
     @ResponseBody
     public Code getApiCode(@PathVariable String id) {
-        Code currentCode = codeService.getCode(id).get();
+        Code currentCode;
+
+        if(codeService.getCode(id).isPresent()) {
+            currentCode = codeService.getCode(id).get();
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
+        }
 
         if(currentCode.isSecret()) {
             int timeBetween = (int) (Duration.between(currentCode.getDate(), LocalDateTime.now()).getSeconds());
@@ -68,7 +74,15 @@ public class CodeController {
     @GetMapping(path = "/code/{id}")
     public String getHtmlCode(@PathVariable String id, Model model) {
         List<Code> currentList = new ArrayList<>();
-        Optional.ofNullable(codeService.getCode(id)).ifPresent(x -> currentList.add(x.get()));
+        if(codeService.getCode(id).isPresent()){
+            currentList.add(codeService.getCode(id).get());
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
+        }
+
+        if(currentList.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
+        }
 
         if(currentList.get(0).isSecret()) {
             int timeBetween = (int) (Duration.between(currentList.get(0).getDate(), LocalDateTime.now()).getSeconds());
