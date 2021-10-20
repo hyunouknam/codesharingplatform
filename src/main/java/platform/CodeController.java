@@ -46,16 +46,19 @@ public class CodeController {
 
         if(currentCode.isSecret()) {
             int timeBetween = (int) (Duration.between(currentCode.getDate(), LocalDateTime.now()).getSeconds());
-            int timeLeft = currentCode.getTime() - timeBetween;
+            int originalTime = currentCode.getTime();
+            int timeLeft = originalTime - timeBetween;
 
             currentCode.setViews(currentCode.getViews() - 1);
 
-            if((currentCode.getTime() > 0 && timeLeft <= 0) || currentCode.getViews() == 0) {
+            if((originalTime > 0 && timeLeft <= 0) || currentCode.getViews() == 0) {
                 codeService.deleteCode(currentCode.getId());
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
             } else {
                 codeService.updateCode(currentCode);
-                currentCode.setTime(timeLeft);
+                if(originalTime > 0) {
+                    currentCode.setTime(timeLeft);
+                }
             }
         }
 
