@@ -1,9 +1,12 @@
 package platform;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 @Entity
@@ -14,15 +17,22 @@ public class Code {
     private String code;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String title;
-    private String date;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime date;
+    private int views;
+    private int time;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private boolean secret;
 
     public Code(){
     }
 
-    public Code(String code, String title, String date) {
+    public Code(String code, String title, LocalDateTime date, int views, int time) {
         this.code = code;
         this.title = title;
         this.date = date;
+        this.views = views;
+        this.time = time;
     }
 
     public String getId() {
@@ -50,10 +60,34 @@ public class Code {
     }
 
     public String getDate() {
-        return date;
+        return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    public int getViews() {
+        return views;
+    }
+
+    public void setView(int view) {
+        this.views = view;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
+    }
+
+    public boolean isSecret() {
+        return secret;
+    }
+
+    public void setSecret(boolean secret) {
+        this.secret = secret;
     }
 }

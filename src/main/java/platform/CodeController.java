@@ -15,9 +15,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Controller
 public class CodeController {
 
-    private static final String DATE_FORMATTER = "yyyy-MM-dd HH:mm:ss";
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMATTER);
-
     private final String title = "Code";
 
     @Autowired
@@ -29,7 +26,12 @@ public class CodeController {
     @PostMapping(path = "/api/code/new")
     @ResponseBody
     public Map<String,String> postCode(@RequestBody Code code){
-        Code newCode = new Code(code.getCode(), title, LocalDateTime.now().format(formatter));
+        Code newCode = new Code(code.getCode(), title, LocalDateTime.now(), code.getViews(), code.getTime());
+        if(code.getViews() > 0 || code.getTime() > 0) {
+            newCode.setSecret(true);
+        } else {
+            newCode.setSecret(false);
+        }
         codeService.addCode(newCode);
         Map<String,String> idMap = new HashMap<>();
         idMap.put("id", newCode.getId());
