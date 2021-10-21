@@ -27,12 +27,23 @@ public class CodeController {
     @PostMapping(path = "/api/code/new")
     @ResponseBody
     public Map<String,String> postCode(@RequestBody Code code){
-        Code newCode = new Code(code.getCode(), title, LocalDateTime.now(), code.getViews(), code.getTime());
-        if(code.getViews() > 0 || code.getTime() > 0) {
-            newCode.setSecret(true);
+        int views = code.getViews() > 0 ? code.getViews() : 0;
+        int time = code.getTime() > 0 ? code.getTime() : 0;
+
+        Code newCode = new Code(code.getCode(), title, LocalDateTime.now(), views, time);
+
+        if(views > 0) {
+            newCode.setViewRestriction(true);
         } else {
-            newCode.setSecret(false);
+            newCode.setViewRestriction(false);
         }
+
+        if(time > 0) {
+            newCode.setTimeRestriction(true);
+        } else {
+            newCode.setTimeRestriction(false);
+        }
+
         codeService.addCode(newCode);
         Map<String,String> idMap = new HashMap<>();
         idMap.put("id", newCode.getId());
@@ -50,17 +61,20 @@ public class CodeController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
         }
 
-        if(currentCode.isSecret()) {
+        if(currentCode.isTimeRestriction() || currentCode.isViewRestriction()) {
             int timeBetween = (int) (Duration.between(currentCode.getDate(), LocalDateTime.now()).getSeconds());
             int originalTime = currentCode.getTime();
             int timeLeft = originalTime - timeBetween;
 
             currentCode.setViews(currentCode.getViews() - 1);
 
-            if((originalTime > 0 && timeLeft <= 0) || currentCode.getViews() == 0) {
+            if((originalTime > 0 && timeLeft <= 0) || (currentCode.isViewRestriction() && currentCode.getViews() < 0)) {
                 codeService.deleteCode(currentCode.getId());
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
             } else {
+                if(currentCode.getViews() <= 0) {
+                    currentCode.setViews(0);
+                }
                 codeService.updateCode(currentCode);
                 if(originalTime > 0) {
                     currentCode.setTime(timeLeft);
@@ -80,20 +94,19 @@ public class CodeController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
         }
 
-        if(currentList.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
-        }
-
-        if(currentList.get(0).isSecret()) {
+        if(currentList.get(0).isTimeRestriction() || currentList.get(0).isViewRestriction()) {
             int timeBetween = (int) (Duration.between(currentList.get(0).getDate(), LocalDateTime.now()).getSeconds());
             int timeLeft = currentList.get(0).getTime() - timeBetween;
 
             currentList.get(0).setViews(currentList.get(0).getViews() - 1);
 
-            if((currentList.get(0).getTime() > 0 && timeLeft <= 0) || currentList.get(0).getViews() == 0) {
+            if((currentList.get(0).getTime() > 0 && timeLeft <= 0) || (currentList.get(0).isViewRestriction() && currentList.get(0).getViews() < 0)) {
                 codeService.deleteCode(currentList.get(0).getId());
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
             } else {
+                if(currentList.get(0).getViews() <= 0) {
+                    currentList.get(0).setViews(0);
+                }
                 model.addAttribute("time", timeLeft);
                 codeService.updateCode(currentList.get(0));
             }

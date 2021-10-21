@@ -10,7 +10,7 @@
 <body>
     <#list codes as code>
             <span id="load_date">${code.formattedDate}</span><br>
-            <#if (code.views > 0)>
+            <#if code.viewRestriction && (code.views >= 0)>
                 <span id="views_restriction"> ${code.views} more views allowed </span><br>
             </#if>
             <#if (code.time > 0)>

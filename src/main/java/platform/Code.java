@@ -24,7 +24,9 @@ public class Code {
     private int views;
     private int time;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private boolean secret;
+    private boolean viewRestriction;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private boolean timeRestriction;
 
     public Code(){
     }
@@ -89,11 +91,19 @@ public class Code {
         this.time = time;
     }
 
-    public boolean isSecret() {
-        return secret;
+    public boolean isViewRestriction() {
+        return viewRestriction;
     }
 
-    public void setSecret(boolean secret) {
-        this.secret = secret;
+    public void setViewRestriction(boolean viewRestriction) {
+        this.viewRestriction = viewRestriction;
+    }
+
+    public boolean isTimeRestriction() {
+        return timeRestriction;
+    }
+
+    public void setTimeRestriction(boolean timeRestriction) {
+        this.timeRestriction = timeRestriction;
     }
 }
