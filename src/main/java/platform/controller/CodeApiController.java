@@ -1,13 +1,9 @@
-package platform.Controller;
+package platform.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.ModelAndView;
 import platform.Code;
 import platform.CodeService;
 
@@ -29,26 +25,9 @@ public class CodeApiController {
 
     @PostMapping(path = "/code/new")
     public Map<String,String> postCode(@RequestBody Code code){
-        int views = code.getViews() > 0 ? code.getViews() : 0;
-        int time = code.getTime() > 0 ? code.getTime() : 0;
-
-        Code newCode = new Code(code.getCode(), title, LocalDateTime.now(), views, time);
-
-        if(views > 0) {
-            newCode.setViewRestriction(true);
-        } else {
-            newCode.setViewRestriction(false);
-        }
-
-        if(time > 0) {
-            newCode.setTimeRestriction(true);
-        } else {
-            newCode.setTimeRestriction(false);
-        }
-
-        codeService.addCode(newCode);
+        String id = codeService.addCode(code);
         Map<String,String> idMap = new HashMap<>();
-        idMap.put("id", newCode.getId());
+        idMap.put("id", id);
         return idMap;
     }
 
