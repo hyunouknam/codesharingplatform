@@ -24,30 +24,11 @@ public class CodeViewController {
     @GetMapping(path = "/code/{id}")
     public String getHtmlCode(@PathVariable String id, Model model) {
         List<Code> currentList = new ArrayList<>();
-        if(codeService.getCode(id).isPresent()){
-            currentList.add(codeService.getCode(id).get());
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
-        }
 
-        if(currentList.get(0).isTimeRestriction() || currentList.get(0).isViewRestriction()) {
-            int timeBetween = (int) (Duration.between(currentList.get(0).getDate(), LocalDateTime.now()).getSeconds());
-            int timeLeft = currentList.get(0).getTime() - timeBetween;
+        Code currentCode = codeService.getCode(id).get();
+        currentList.add(currentCode);
 
-            currentList.get(0).setViews(currentList.get(0).getViews() - 1);
-
-            if((currentList.get(0).getTime() > 0 && timeLeft <= 0) || (currentList.get(0).isViewRestriction() && currentList.get(0).getViews() < 0)) {
-                codeService.deleteCode(currentList.get(0).getId());
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
-            } else {
-                if(currentList.get(0).getViews() <= 0) {
-                    currentList.get(0).setViews(0);
-                }
-                model.addAttribute("time", timeLeft);
-                codeService.updateCode(currentList.get(0));
-            }
-        }
-
+        model.addAttribute("time", currentCode.getTime());
         model.addAttribute("title", "Code");
         model.addAttribute("codes", currentList);
         return "codeView";

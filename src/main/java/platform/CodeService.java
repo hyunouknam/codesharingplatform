@@ -1,9 +1,13 @@
 package platform;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import platform.util.Util;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,7 +60,46 @@ public class CodeService {
     }
 
     public Optional<Code> getCode(String id) {
-        return codeRepository.findById(id);
+        Optional<Code> code = codeRepository.findById(id);
+
+        // Logic happens if present, if not skips to return
+        if(code.isPresent()){
+            Code currentCode = code.get();
+
+            // Check if current code has time restriction
+            if(currentCode.isTimeRestriction()) {
+                // timeLeft is how much time there is left until code disappears
+                int timeLeft = util.getTimeDifference(currentCode.getTime(), currentCode.getDate());
+
+                // Set time to current time left
+                currentCode.setTime(timeLeft);
+
+                if(timeLeft <= 0) {
+                    deleteCode(currentCode.getId());
+                    code = Optional.empty();
+                } else {
+                    updateCode(currentCode);
+                }
+            }
+
+            // Check if current code has views restriction
+            if(currentCode.isViewRestriction()) {
+
+                // Decrement views by 1
+                currentCode.setViews(currentCode.getViews() - 1);
+
+                if(currentCode.getViews() < 0) {
+                    deleteCode(currentCode.getId());
+                    currentCode = null;
+                } else {
+                    updateCode(currentCode);
+                }
+            }
+
+            code = Optional.of(currentCode);
+        }
+
+        return code;
     }
 
     public long getCount() {

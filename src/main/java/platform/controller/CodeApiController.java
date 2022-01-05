@@ -7,8 +7,6 @@ import org.springframework.web.server.ResponseStatusException;
 import platform.Code;
 import platform.CodeService;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
@@ -33,36 +31,14 @@ public class CodeApiController {
 
     @GetMapping(path = "/code/{id}", produces = "application/json;charset=UTF-8")
     public Code getApiCode(@PathVariable String id) {
-        Code currentCode;
+        Optional<Code> currentCode = codeService.getCode(id);
 
-        if(codeService.getCode(id).isPresent()) {
-            currentCode = codeService.getCode(id).get();
-        } else {
+        // Checks if code is exists with id, if not throw exception
+        if(!currentCode.isPresent()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
         }
 
-        if(currentCode.isTimeRestriction() || currentCode.isViewRestriction()) {
-            int timeBetween = (int) (Duration.between(currentCode.getDate(), LocalDateTime.now()).getSeconds());
-            int originalTime = currentCode.getTime();
-            int timeLeft = originalTime - timeBetween;
-
-            currentCode.setViews(currentCode.getViews() - 1);
-
-            if((originalTime > 0 && timeLeft <= 0) || (currentCode.isViewRestriction() && currentCode.getViews() < 0)) {
-                codeService.deleteCode(currentCode.getId());
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
-            } else {
-                if(currentCode.getViews() <= 0) {
-                    currentCode.setViews(0);
-                }
-                codeService.updateCode(currentCode);
-                if(originalTime > 0) {
-                    currentCode.setTime(timeLeft);
-                }
-            }
-        }
-
-        return currentCode;
+        return currentCode.get();
     }
 
     @GetMapping(path = "/code/latest", produces = "application/json;charset=UTF-8")

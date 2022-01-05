@@ -2,6 +2,7 @@ package platform.util;
 
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -10,6 +11,11 @@ public class Util {
 
     public LocalDateTime getCurrentDate() {
         return LocalDateTime.now();
+    }
+
+    public int getTimeDifference(int originalTimeLeft, LocalDateTime originalDate) {
+        int timeBetween = (int) (Duration.between(originalDate, getCurrentDate()).getSeconds());;
+        return originalTimeLeft - timeBetween;
     }
 
     public String getUUID() {
