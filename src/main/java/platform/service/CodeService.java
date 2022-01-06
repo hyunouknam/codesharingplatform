@@ -106,10 +106,6 @@ public class CodeService {
         return codeRepository.count();
     }
 
-    public List<Code> getAll() {
-        return codeRepository.findTop10ByViewRestrictionFalseAndTimeRestrictionFalseOrderByDateDesc();
-    }
-
     public List<Code> getLatestTen() {
         return codeRepository.findTop10ByViewRestrictionFalseAndTimeRestrictionFalseOrderByDateDesc();
     }

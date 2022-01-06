@@ -32,12 +32,7 @@ public class CodeViewController {
 
     @GetMapping(path = "/code/latest")
     public String getLatestHtmlCode(Model model) {
-        if(codeService.getCount() > 10) {
-            model.addAttribute("codes", codeService.getLatestTen());
-        } else {
-            model.addAttribute("codes", codeService.getAll());
-        }
-
+        model.addAttribute("codes", codeService.getLatestTen());
         model.addAttribute("title", "Latest");
         return "codeView";
     }

@@ -43,10 +43,6 @@ public class CodeApiController {
 
     @GetMapping(path = "/code/latest", produces = "application/json;charset=UTF-8")
     public List<Code> getLatestApiCode() {
-        if(codeService.getCount() > 10){
-            return codeService.getLatestTen();
-        }else{
-            return codeService.getAll();
-        }
+        return codeService.getLatestTen();
     }
 }
