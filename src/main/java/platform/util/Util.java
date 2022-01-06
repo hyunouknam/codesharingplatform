@@ -14,8 +14,8 @@ public class Util {
     }
 
     public int getTimeDifference(int originalTimeLeft, LocalDateTime originalDate) {
-        int timeBetween = (int) (Duration.between(originalDate, getCurrentDate()).getSeconds());;
-        return originalTimeLeft - timeBetween;
+        Duration d = (Duration.between(originalDate, getCurrentDate()));
+        return originalTimeLeft - (int) d.getSeconds();
     }
 
     public String getUUID() {

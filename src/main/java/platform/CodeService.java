@@ -66,22 +66,6 @@ public class CodeService {
         if(code.isPresent()){
             Code currentCode = code.get();
 
-            // Check if current code has time restriction
-            if(currentCode.isTimeRestriction()) {
-                // timeLeft is how much time there is left until code disappears
-                int timeLeft = util.getTimeDifference(currentCode.getTime(), currentCode.getDate());
-
-                // Set time to current time left
-                currentCode.setTime(timeLeft);
-
-                if(timeLeft <= 0) {
-                    deleteCode(currentCode.getId());
-                    code = Optional.empty();
-                } else {
-                    updateCode(currentCode);
-                }
-            }
-
             // Check if current code has views restriction
             if(currentCode.isViewRestriction()) {
 
@@ -93,6 +77,24 @@ public class CodeService {
                     currentCode = null;
                 } else {
                     updateCode(currentCode);
+                }
+            }
+
+            // Time restriction HAS to go after views as it will update more than once due to duplicating update
+            // if time restriction ran before views restriction
+            if(currentCode.isTimeRestriction()) {
+                // timeLeft is how much time there is left until code disappears
+                int timeLeft = util.getTimeDifference(currentCode.getTime(), currentCode.getDate());
+
+                //currentCode.setTime(timeLeft);
+
+                if(timeLeft <= 0) {
+                    deleteCode(currentCode.getId());
+                    currentCode = null;
+                } else {
+                    updateCode(currentCode);
+                    // Set time to current time left
+                    currentCode.setTime(timeLeft);
                 }
             }
 
