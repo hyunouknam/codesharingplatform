@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import platform.Code;
-import platform.CodeService;
+import platform.model.Code;
+import platform.service.CodeService;
 
 import java.util.*;
 

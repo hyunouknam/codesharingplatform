@@ -1,9 +1,8 @@
 package platform.util;
 
 import org.junit.jupiter.api.Test;
-import platform.Code;
+import platform.model.Code;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
